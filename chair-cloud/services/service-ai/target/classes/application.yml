@@ -1,0 +1,65 @@
+server:
+  port: 18001
+  servlet:
+    context-path: /ai
+
+spring:
+  application:
+    name: service-ai
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: dev
+        group: dev
+      config:
+        # 禁用导入检查，如果不适用nacos的配置中心就要启用这个配置，不然启动会报错
+#        import-check:
+#          enabled: false
+        namespace: dev
+        group: dev
+    openfeign:
+      client:
+        config:
+          default:
+            logger-level: full
+            connect-timeout: 5000
+            read-timeout: 10000
+          service-auth:
+            logger-level: full
+            connect-timeout: 3000
+            read-timeout: 5000
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:8080
+      eager: true
+
+  config:
+    import:
+    - nacos:service-ai.yml
+
+feign:
+  sentinel:
+    enabled: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.chair.ai.controller
+
+# knife4j config
+knife4j:
+  enable: true
+  setting:
+    language: zh-CN
+
+logging:
+  level:
+    com.chair.ai.feign: debug
