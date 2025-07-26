@@ -23,6 +23,7 @@
     <modules>
         <module>services</module>
         <module>common</module>
+        <module>geteway</module>
     </modules>
     <scm>
         <connection/>
