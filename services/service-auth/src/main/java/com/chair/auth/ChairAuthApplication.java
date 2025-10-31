@@ -14,10 +14,10 @@ import java.util.concurrent.*;
 @EnableFeignClients
 @SpringBootApplication
 @EnableDiscoveryClient
-public class AuthMainApplication {
+public class ChairAuthApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AuthMainApplication.class, args);
+        SpringApplication.run(ChairAuthApplication.class, args);
     }
 
 

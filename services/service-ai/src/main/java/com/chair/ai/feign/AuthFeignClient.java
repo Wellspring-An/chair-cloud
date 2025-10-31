@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(value = "service-auth", fallback = AuthFeignClientFallback.class)
+@FeignClient(value = "service-auth",contextId = "auth-service-ai", fallback = AuthFeignClientFallback.class)
 public interface AuthFeignClient {
 
     // mvc注解的两套使用逻辑

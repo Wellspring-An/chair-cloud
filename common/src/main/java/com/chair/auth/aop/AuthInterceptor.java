@@ -8,6 +8,7 @@ import com.chair.auth.model.entity.User;
 import com.chair.auth.enums.UserRoleEnum;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -46,6 +47,9 @@ public class AuthInterceptor {
 
         // 获取当前登录用户 token
         String token = request.getHeader(tokenConfig.getTokenName());
+        if (StringUtils.isBlank(token)) {
+            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
+        }
         // 当前登录用户
         User loginUser = (User) redisTemplate.opsForValue().get(token);
         if (loginUser == null) {

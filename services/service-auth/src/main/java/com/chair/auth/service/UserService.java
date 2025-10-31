@@ -10,6 +10,7 @@ import com.chair.auth.model.vo.UserVO;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 用户服务
@@ -108,6 +109,14 @@ public interface UserService extends IService<User> {
      * @return
      */
     List<UserVO> getUserVO(List<User> userList);
+
+    /**
+     * 获取脱敏的用户信息
+     *
+     * @param ids
+     * @return
+     */
+    List<User> getListUserVO(Set<String> ids,HttpServletRequest request);
 
     /**
      * 获取查询条件

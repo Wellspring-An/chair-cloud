@@ -1,0 +1,60 @@
+server:
+  port: 18002
+  servlet:
+    context-path: /app
+
+spring:
+  application:
+    name: service-app
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: dev
+        group: dev
+      config:
+        namespace: dev
+        group: dev
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:8858
+      eager: true
+    openfeign:
+      client:
+        config:
+          default:
+            logger-level: full
+            connect-timeout: 5000
+            read-timeout: 10000
+          service-auth:
+            logger-level: full
+            connect-timeout: 3000
+            read-timeout: 5000
+  config:
+    import:
+      - nacos:service-app.yml
+
+# 接口文档配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.chair.app.controller
+
+knife4j:
+  enable: true
+  setting:
+    language: zh-CN
+
+chair:
+  token-name: chair-token
+
+logging:
+  level:
+    com.chair: DEBUG

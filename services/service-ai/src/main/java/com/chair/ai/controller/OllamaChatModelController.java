@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
 @RestController
-@RequestMapping("/ai")
+@RequestMapping("/simple")
 public class OllamaChatModelController {
 
     @Resource
     private OllamaConfig ollamaConfig;
 
-    @GetMapping("/simple/chat")
+    @GetMapping("/chat")
     public String simpleChat(String chatId, String userMessage, String sysMessage) {
         return ollamaConfig.doQuest(chatId, userMessage, sysMessage);
     }
 
-    @GetMapping("/simple/chat/sse")
+    @GetMapping("/chat/sse")
     public Flux<String> simpleChatSSE(String chatId, String userMessage, String sysMessage) {
         return ollamaConfig.doStreamSQuest(chatId, userMessage, sysMessage);
     }

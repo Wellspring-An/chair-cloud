@@ -4,12 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.chair</groupId>
-        <artifactId>services</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <groupId>com.chair.cloud</groupId>
+        <artifactId>chair-cloud-services</artifactId>
+        <version>0.0.1</version>
     </parent>
 
-    <artifactId>service-auth</artifactId>
+    <artifactId>chair-cloud-auth</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -20,9 +20,9 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.chair</groupId>
-            <artifactId>common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>com.chair.cloud</groupId>
+            <artifactId>chair-cloud-common</artifactId>
+            <version>0.0.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -8,9 +8,9 @@
         <version>3.3.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.chair</groupId>
-    <artifactId>cloud</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <groupId>com.chair.cloud</groupId>
+    <artifactId>chair-cloud</artifactId>
+    <version>0.0.1</version>
     <name>chair-cloud</name>
     <description>chair-cloud</description>
     <url/>

@@ -9,6 +9,7 @@ import com.chair.auth.common.ResultUtils;
 import com.chair.auth.config.TokenConfig;
 import com.chair.auth.constant.CommonConstant;
 import com.chair.auth.exception.BusinessException;
+import com.chair.auth.exception.ThrowUtils;
 import com.chair.auth.mapper.UserMapper;
 import com.chair.auth.model.dto.UserQueryRequest;
 import com.chair.auth.model.entity.User;
@@ -28,6 +29,7 @@ import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -37,7 +39,6 @@ import static com.chair.auth.constant.UserConstant.USER_LOGIN_STATE;
 
 /**
  * 用户服务实现
-
  */
 @Service
 @Slf4j
@@ -48,6 +49,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Resource
     private TokenConfig tokenConfig;
+
+    @Resource
+    private UserMapper userMapper;
 
     @Override
     public long userRegister(String userAccount, String userPassword, String checkPassword) {
@@ -176,7 +180,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             log.error("用户未登录，无法获取当前用户, 请求地址: {}", request.getRequestURI());
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
-        User currentUser = (User) redisTemplate.opsForValue().get(token);;
+        User currentUser = (User) redisTemplate.opsForValue().get(token);
+        ;
         if (currentUser == null || currentUser.getId() == null) {
             log.error("用户未登录，无法获取当前用户, 请求地址: {}", request.getRequestURI());
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
@@ -269,6 +274,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return new ArrayList<>();
         }
         return userList.stream().map(this::getUserVO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<User> getListUserVO(Set<String> ids, HttpServletRequest request) {
+        User user = (User) redisTemplate.opsForValue().get((String) request.getHeader("chair-token"));
+        ThrowUtils.throwIf(user == null, ErrorCode.NOT_LOGIN_ERROR, "用户未登录");
+        return userMapper.selectBatchIds(ids);
     }
 
     @Override

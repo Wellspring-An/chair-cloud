@@ -21,6 +21,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.chair.auth.config.TokenConfig.SALT;
 
@@ -149,8 +150,14 @@ public class UserController {
      * @return
      */
     @GetMapping("/get/login")
-    public BaseResponse<LoginUserVO> getLoginUser(HttpServletRequest request) {
-        User user = userService.getLoginUser(request);
+    public BaseResponse getLoginUser(HttpServletRequest request) {
+        User user;
+        try {
+            user = userService.getLoginUser(request);
+        } catch (Exception e) {
+            log.error("获取用户信息失败，{}", e.getMessage());
+            return ResultUtils.error(ErrorCode.NOT_LOGIN_ERROR);
+        }
         System.out.println("authTimeout：" + authYml.getTimeout());
         return ResultUtils.success(userService.getLoginUserVO(user));
     }
@@ -294,6 +301,25 @@ public class UserController {
         List<UserVO> userVO = userService.getUserVO(userPage.getRecords());
         userVOPage.setRecords(userVO);
         return ResultUtils.success(userVOPage);
+    }
+
+    /**
+     * 分页获取用户封装列表
+     *
+     * @param ids
+     * @param request
+     * @return
+     */
+    @PostMapping("/list/page/vo/from/userIds")
+    public BaseResponse<List<UserVO>> listUserVOFromUserIdByPage(@RequestBody Set<String> ids,
+                                                                 HttpServletRequest request) {
+        if (ids.isEmpty()) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        List<User> userList = userService.getListUserVO(ids, request);
+        List<UserVO> userVO = userService.getUserVO(userList);
+
+        return ResultUtils.success(userVO);
     }
 
     // endregion
